@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Attendance Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header">
+        <h1 class="system-title">Attendance Management System</h1>
+        <div class="datetime-display">
+            <div class="date" id="currentDate"></div>
+            <div class="time" id="currentTime"></div>
+        </div>
+    </div>
+    
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav>
+                <ul class="sidebar-nav">
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="attendance.html">Attendance</a></li>
+                    <li><a href="add-class.html" id="classLink">Add Class</a></li>
+                    <li><a href="add-student.html" id="studentLink">Add Student</a></li>
+                    <li><a href="report.html" class="active">Report</a></li>
+                    <li><a href="user-management.html" id="userLink">Register</a></li>
+                    <li><a href="#" id="logoutBtn">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <h2>Attendance Reports</h2>
+            <div id="alertMessage"></div>
+            
+            <div class="report-filters">
+                <div class="filter-group">
+                    <label for="reportType">Report Type</label>
+                    <select id="reportType" class="form-control">
+                        <option value="class-wise">Class-wise Report</option>
+                        <option value="student-wise">Student-wise Report</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group" id="classFilter" style="display: none;">
+                    <label for="classSelect">Class</label>
+                    <select id="classSelect" class="form-control">
+                        <option value="">All Classes</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group" id="studentFilter" style="display: none;">
+                    <label for="studentSelect">Student</label>
+                    <select id="studentSelect" class="form-control">
+                        <option value="">Select Student</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" class="form-control">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" class="form-control">
+                </div>
+                
+                <button class="btn btn-primary" id="generateReport">Generate Report</button>
+                <button class="btn btn-secondary" id="printReport">Print Report</button>
+            </div>
+            
+            <div class="table-container">
+                <table class="table" id="reportTable">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Registration No</th>
+                            <th>Class</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportData">
+                        <!-- Data will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="report-summary" id="reportSummary" style="display: none;">
+                <h3>Report Summary</h3>
+                <div class="summary-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Present:</span>
+                        <span class="stat-value" id="totalPresent">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Absent:</span>
+                        <span class="stat-value" id="totalAbsent">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Attendance Percentage:</span>
+                        <span class="stat-value" id="attendancePercentage">0%</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const day = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            document.getElementById('currentDate').textContent = `${day}, ${date} ${month} ${year}`;
+            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Management - Attendance Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.ico') }}">
+</head>
+<body>
+    <div class="header">
+        <h1 class="system-title">Attendance Management System</h1>
+        <div class="datetime-display">
+            <div class="date" id="currentDate"></div>
+            <div class="time" id="currentTime"></div>
+        </div>
+    </div>
+    
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav>
+                <ul class="sidebar-nav">
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('attendance') }}">Attendance</a></li>
+                    <li><a href="{{ url_for('add_class') }}" class="active" id="classLink">Add Class</a></li>
+                    <li><a href="{{ url_for('add_student') }}" id="studentLink">Add Student</a></li>
+                    <li><a href="{{ url_for('report') }}">Report</a></li>
+                    <li><a href="{{ url_for('user_management') }}" id="userLink">User Management</a></li>
+                    <li><a href="#" id="logoutBtn">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <h2>Class Management</h2>
+            <div id="alertMessage"></div>
+            
+            <button class="btn btn-primary" id="addClassBtn">Add New Class</button>
+            
+            <div class="search-box">
+                <input type="text" id="searchClass" placeholder="Search classes...">
+            </div>
+            
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Class Name</th>
+                            <th>Total Students</th>
+                            <th>Male Students</th>
+                            <th>Female Students</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="classesTable">
+                        <!-- Data will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Class Modal -->
+    <div id="classModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Class</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="classForm">
+                <input type="hidden" id="classId">
+                <div class="form-group">
+                    <label for="className">Class Name</label>
+                    <input type="text" id="className" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="maleStudents">Number of Male Students</label>
+                    <input type="number" id="maleStudents" class="form-control" min="0" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="femaleStudents">Number of Female Students</label>
+                    <input type="number" id="femaleStudents" class="form-control" min="0" value="0" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Class</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/classes.js') }}"></script>
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const day = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            document.getElementById('currentDate').textContent = `${day}, ${date} ${month} ${year}`;
+            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>

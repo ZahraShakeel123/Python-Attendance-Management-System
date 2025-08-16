@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - Attendance Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.ico') }}">
+</head>
+<body>
+    <div class="header">
+        <h1 class="system-title">Attendance Management System</h1>
+        <div class="datetime-display">
+            <div class="date" id="currentDate"></div>
+            <div class="time" id="currentTime"></div>
+        </div>
+    </div>
+    
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav>
+                <ul class="sidebar-nav">
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('attendance') }}" class="active">Attendance</a></li>
+                    <li><a href="{{ url_for('add_class') }}" id="classLink">Add Class</a></li>
+                    <li><a href="{{ url_for('add_student') }}" id="studentLink">Add Student</a></li>
+                    <li><a href="{{ url_for('report') }}">Report</a></li>
+                    <li><a href="{{ url_for('user_management') }}" id="userLink">User Management</a></li>
+                    <li><a href="#" id="logoutBtn">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <h2>Mark Attendance</h2>
+            <div id="alertMessage"></div>
+            
+            <div class="form-group">
+                <label for="attendanceDate">Date</label>
+                <input type="date" id="attendanceDate" class="form-control" style="width: 200px;">
+            </div>
+            
+            <div class="form-group">
+                <label for="classSelect">Select Class</label>
+                <select id="classSelect" class="form-control" style="width: 300px;">
+                    <option value="">Select a class</option>
+                </select>
+            </div>
+            
+            <div id="studentsList" style="display: none;">
+                <h3>Mark Student Attendance</h3>
+                <div class="table-container">
+                    <div id="attendanceGrid">
+                        <!-- Students will be loaded dynamically in table format -->
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-primary" id="saveAttendance" style="margin-top: 2rem;">
+                    Save Attendance
+                </button>
+            </div>
+            
+            <div class="table-container" style="margin-top: 3rem;">
+                <h3>Today's Attendance</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Registration No</th>
+                            <th>Class</th>
+                            <th>Status</th>
+                            <th>Marked By</th>
+                        </tr>
+                    </thead>
+                    <tbody id="todayAttendance">
+                        <!-- Data will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/attendance.js') }}"></script>
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const day = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            document.getElementById('currentDate').textContent = `${day}, ${date} ${month} ${year}`;
+            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>
